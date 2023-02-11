@@ -1,19 +1,24 @@
+//Option 1b: fetch products on the server side in get server side props
+//but with incremental static regeneration
+
 import Head from "next/head";
 import Title from "@/components/Title";
+import { getProducts } from "../lib/products";
+import { GetServerSidePropsResult } from "next";
 import { Product } from "./api/products";
 
-const products: Product[] = [
-  {
-    id: 1,
-    title: "first p",
-  },
-  {
-    id: 2,
-    title: "second p",
-  },
-];
+interface HomePageProps {
+  products: Product[];
+}
 
-function HomePage() {
+export async function getServerSideProps(): Promise<
+  GetServerSidePropsResult<HomePageProps>
+> {
+  const products = await getProducts();
+  return { props: { products } };
+}
+
+function HomePage({ products }: HomePageProps) {
   return (
     <>
       <Head>
