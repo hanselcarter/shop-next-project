@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export interface Product {
   id: number;
   title: string;
+  description: string;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse<Product[]>) {

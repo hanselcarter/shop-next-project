@@ -1,19 +1,22 @@
 import Head from "next/head";
 import Title from "@/components/Title";
 import { Product } from "./api/products";
-
-const products: Product[] = [
-  {
-    id: 1,
-    title: "first p",
-  },
-  {
-    id: 2,
-    title: "second p",
-  },
-];
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
 function HomePage() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await fetch("/api/products");
+
+      const products = await response.json();
+
+      setProducts(products);
+    })();
+  }, []);
+
   return (
     <>
       <Head>
@@ -26,7 +29,9 @@ function HomePage() {
         <Title title="Next Shop" />
         <ul>
           {products.map((product) => (
-            <li key={product.id}>{product.title}</li>
+            <li key={product.id}>
+              <Link href={`/products/${product.id}`}>{product.title}</Link>
+            </li>
           ))}
         </ul>
       </main>

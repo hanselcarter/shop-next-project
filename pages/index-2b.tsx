@@ -5,7 +5,6 @@ import Head from "next/head";
 import Title from "@/components/Title";
 import { useEffect, useState } from "react";
 
-import { getProducts } from "../lib/products";
 import { Product } from "./api/products";
 
 function HomePage() {
