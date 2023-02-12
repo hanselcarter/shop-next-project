@@ -2,7 +2,7 @@ import Head from "next/head";
 import Title from "@/components/Title";
 import { Product } from "./api/products";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { ProductCard } from "@/components/ProductCard";
 
 function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -27,10 +27,10 @@ function HomePage() {
       </Head>
       <main className="p-4">
         <Title title="Next Shop" />
-        <ul>
+        <ul className="grid grid-cols-1 lg:grid-cols-3">
           {products.map((product) => (
             <li key={product.id}>
-              <Link href={`/products/${product.id}`}>{product.title}</Link>
+              <ProductCard product={product} />
             </li>
           ))}
         </ul>

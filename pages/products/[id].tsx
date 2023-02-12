@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { Product } from "../api/products";
 import { useRouter } from "next/router";
+import { ProductCard } from "@/components/ProductCard";
 
 interface ProductPageProps {
   productId: string;
@@ -61,6 +62,7 @@ const ProductPage = ({ productId }: ProductPageProps): JSX.Element => {
   return (
     <>
       <h1>{product?.title}</h1>
+      <ProductCard product={product} />
       <p>{product?.description}</p>
     </>
   );
