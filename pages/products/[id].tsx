@@ -6,6 +6,7 @@ import {
 } from "next";
 import { useEffect, useState } from "react";
 import { Product } from "../api/products";
+import { useRouter } from "next/router";
 
 interface ProductPageProps {
   productId: string;
@@ -20,7 +21,7 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult> {
         id: product.id.toString(),
       },
     })),
-    fallback: false,
+    fallback: "blocking",
   };
 }
 
@@ -33,20 +34,28 @@ export async function getStaticProps(
 }
 
 const ProductPage = ({ productId }: ProductPageProps): JSX.Element => {
-  const [product, setProduct] = useState<Product>();
+  const router = useRouter();
+
+  const [product, setProduct] = useState<Product | undefined>(undefined);
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(`/api/product/${productId}`);
+      try {
+        const response = await fetch(`/api/product/${productId}`);
 
-      const product = await response.json();
+        const product = await response.json();
 
-      setProduct(product);
+        setProduct(product);
+      } catch (err) {
+        console.log(err, "err");
+
+        router.push("/not-found");
+      }
     })();
-  }, [productId]);
+  }, [productId, router]);
 
   if (product === undefined) {
-    <>...Loading</>;
+    return <>...Loading</>;
   }
 
   return (

@@ -1,17 +1,17 @@
 import { Product } from "../pages/api/products";
 
-export const getProducts = async (): Promise<Product[]> => {
-  const response = await fetch("http://localhost:1337/products");
+import { fetchJson } from "./api";
 
-  const products = (await response.json()) as Product[];
+const cms_url = process.env.CMS_URL;
+
+export const getProducts = async (): Promise<Product[]> => {
+  const products = (await fetchJson(`${cms_url}/products`)) as Product[];
 
   return products;
 };
 
 export const getProduct = async (id: string): Promise<Product> => {
-  const response = await fetch(`http://localhost:1337/products/${id}`);
-
-  const product = (await response.json()) as Product;
+  const product = (await fetchJson(`${cms_url}/products/${id}`)) as Product;
 
   return product;
 };
