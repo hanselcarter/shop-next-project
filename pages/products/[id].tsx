@@ -1,4 +1,4 @@
-import { getProducts, getProduct } from "@/lib/products";
+import { getProducts } from "@/lib/products";
 import {
   GetStaticPathsResult,
   GetStaticPropsResult,
@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { Product } from "../api/products";
 import { useRouter } from "next/router";
 import { ProductCard } from "@/components/ProductCard";
+import Page from "@/components/Page";
 
 interface ProductPageProps {
   productId: string;
@@ -60,11 +61,12 @@ const ProductPage = ({ productId }: ProductPageProps): JSX.Element => {
   }
 
   return (
-    <>
-      <h1>{product?.title}</h1>
-      <ProductCard product={product} />
-      <p>{product?.description}</p>
-    </>
+    <Page title={product?.title}>
+      <>
+        <ProductCard product={product} />
+        <p>{product?.description}</p>
+      </>
+    </Page>
   );
 };
 
