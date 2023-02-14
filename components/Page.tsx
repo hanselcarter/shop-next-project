@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Title from "@/components/Title";
+import NavBar from "./NavBar";
 
 interface PageProps {
   children?: JSX.Element;
@@ -15,6 +16,9 @@ export const Page = ({ title, children }: PageProps): JSX.Element => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <header>
+        <NavBar />
+      </header>
       <main className="p-4">
         <Title title={title} />
         {children}

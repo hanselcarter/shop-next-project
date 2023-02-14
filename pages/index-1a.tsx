@@ -17,7 +17,7 @@ export async function getStaticProps(): Promise<
   return { props: { products } };
 }
 
-function HomePage({ products }: HomePageProps) {
+function HomePage({ products }: HomePageProps): JSX.Element {
   return (
     <>
       <Head>

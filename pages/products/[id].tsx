@@ -49,8 +49,6 @@ const ProductPage = ({ productId }: ProductPageProps): JSX.Element => {
 
         setProduct(product);
       } catch (err) {
-        console.log(err, "err");
-
         router.push("/not-found");
       }
     })();

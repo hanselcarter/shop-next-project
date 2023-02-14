@@ -3,8 +3,11 @@ import Field from "@/components/Field";
 import Page from "@/components/Page";
 import { fetchJson } from "@/lib/api";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const SignInPage = (): JSX.Element => {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState({
@@ -18,11 +21,13 @@ const SignInPage = (): JSX.Element => {
 
       setStatus({ loading: true, error: false });
 
-      const res = await fetchJson("http://localhost:1337/auth/local", {
+      await fetchJson("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ identifier: email, password }),
+        body: JSON.stringify({ email, password }),
       });
+
+      router.push("/");
 
       setStatus({ loading: false, error: false });
     } catch (err) {
