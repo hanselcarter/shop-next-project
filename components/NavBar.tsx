@@ -1,29 +1,19 @@
 import { fetchJson } from "@/lib/api";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { User } from "../pages/api/login";
+
 import { useRouter } from "next/router";
+import { useUser } from "@/hooks/user";
 
 function NavBar(): JSX.Element {
   const router = useRouter();
 
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const user = useUser();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const user = await fetchJson("api/user");
-        setUser(user);
-      } catch (err) {
-        console.log(err, "err");
-      }
-    })();
-  }, []);
   console.log("navbar", user);
 
   const handleSignOut = async () => {
     await fetchJson("api/logout");
-    setUser(undefined);
+    // setUser(undefined);
     router.push("/sign-in");
   };
   return (

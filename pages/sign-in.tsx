@@ -1,37 +1,26 @@
 import Field from "@/components/Field";
 
 import Page from "@/components/Page";
-import { fetchJson } from "@/lib/api";
+
 import { useState } from "react";
 import { useRouter } from "next/router";
 
+import { useSignIn } from "@/hooks/user";
+
 const SignInPage = (): JSX.Element => {
   const router = useRouter();
-
+  const { signIn, signInError, signInLoading } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [status, setStatus] = useState({
-    error: false,
-    loading: false,
-  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
-      setStatus({ loading: true, error: false });
-
-      await fetchJson("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      await signIn(email, password);
 
       router.push("/");
-
-      setStatus({ loading: false, error: false });
     } catch (err) {
-      setStatus({ loading: false, error: true });
+      // mutation.isError will be true
     }
   };
 
@@ -52,8 +41,8 @@ const SignInPage = (): JSX.Element => {
           onChange={setPassword}
           required={true}
         />
-        {status.error && <p className="text-red-200">Invalid credentials</p>}
-        {status.loading ? (
+        {signInError && <p className="text-red-200">Invalid credentials</p>}
+        {signInLoading ? (
           <p>...loading</p>
         ) : (
           <button
