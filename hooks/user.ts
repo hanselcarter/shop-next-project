@@ -2,10 +2,12 @@ import { User } from "../pages/api/login";
 import { useQuery } from "react-query";
 import { fetchJson, ApiError } from "@/lib/api";
 import { useMutation, useQueryClient } from "react-query";
+import { useRouter } from "next/router";
 
+const USER_QUERY_KEY = "user";
 export function useUser(): User | undefined {
   const query = useQuery(
-    "user",
+    USER_QUERY_KEY,
     async () => {
       try {
         return await fetchJson("api/user");
@@ -51,12 +53,28 @@ export function useSignIn(): UseSignIn {
 
   const signIn = async (email: string, password: string): Promise<void> => {
     const user = await mutation.mutateAsync({ email, password });
-    queryClient.setQueryData("user", user);
+    queryClient.setQueryData(USER_QUERY_KEY, user);
   };
 
   return {
     signInError: mutation.isError,
     signInLoading: mutation.isLoading,
     signIn,
+  };
+}
+
+export function useSignOut() {
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
+  const mutation = useMutation(() => fetchJson("api/logout"));
+
+  return async () => {
+    await mutation.mutateAsync();
+
+    queryClient.setQueryData(USER_QUERY_KEY, undefined);
+
+    router.push("/sign-in");
   };
 }
