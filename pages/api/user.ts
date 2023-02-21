@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ApiError, fetchJson } from "../../lib/api";
+import { fetchJson } from "../../lib/api";
 import { User } from "./login";
 
 const { CMS_URL } = process.env;

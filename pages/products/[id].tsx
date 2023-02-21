@@ -9,6 +9,8 @@ import { Product } from "../api/products";
 import { useRouter } from "next/router";
 import { ProductCard } from "@/components/ProductCard";
 import Page from "@/components/Page";
+import AddToCartWidget from "@/components/AddToCartWidget";
+import { useUser } from "@/hooks/user";
 
 interface ProductPageProps {
   productId: string;
@@ -38,6 +40,8 @@ export async function getStaticProps(
 const ProductPage = ({ productId }: ProductPageProps): JSX.Element => {
   const router = useRouter();
 
+  const user = useUser();
+
   const [product, setProduct] = useState<Product | undefined>(undefined);
 
   useEffect(() => {
@@ -63,6 +67,7 @@ const ProductPage = ({ productId }: ProductPageProps): JSX.Element => {
       <>
         <ProductCard product={product} />
         <p>{product?.description}</p>
+        {user && <AddToCartWidget productId={product.id} />}
       </>
     </Page>
   );

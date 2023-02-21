@@ -1,4 +1,3 @@
-import { fetchJson } from "@/lib/api";
 import Link from "next/link";
 
 import { useRouter } from "next/router";
@@ -8,6 +7,7 @@ function NavBar(): JSX.Element {
   const router = useRouter();
 
   const signOut = useSignOut();
+
   const user = useUser();
 
   return (
@@ -19,6 +19,9 @@ function NavBar(): JSX.Element {
         <li role={"separator"} className="flex-1" />
         {user ? (
           <>
+            <li>
+              <button onClick={() => router.push("/cart")}>Cart</button>
+            </li>
             <li>{user.username}</li>
             <li>
               <button onClick={signOut}>Sign Out</button>
